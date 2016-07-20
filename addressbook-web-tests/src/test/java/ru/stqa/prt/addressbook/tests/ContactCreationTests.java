@@ -1,3 +1,5 @@
+package ru.stqa.prt.addressbook.tests;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -6,11 +8,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.*;
-import ru.stqa.prt.addressbook.ContactCompanyParam;
-import ru.stqa.prt.addressbook.ContactNamesData;
-import ru.stqa.prt.addressbook.ContactPhones;
+import ru.stqa.prt.addressbook.model.ContactCompanyParam;
+import ru.stqa.prt.addressbook.model.ContactNamesData;
+import ru.stqa.prt.addressbook.model.ContactPhones;
 
-public class ContactCreationTests {
+public class ContactCreationTests{
     FirefoxDriver wd;
     
     @BeforeMethod
@@ -105,7 +107,7 @@ public class ContactCreationTests {
     public void tearDown() {
         wd.quit();
     }
-    
+
     public static boolean isAlertPresent(FirefoxDriver wd) {
         try {
             wd.switchTo().alert();
