@@ -9,15 +9,15 @@ import ru.stqa.prt.addressbook.model.ContactPhones;
 /**
  * Created by natkin on 20.07.2016.
  */
-public class ContactHelper {
-  private FirefoxDriver wd;
+public class ContactHelper extends HelperBase {
+
 
   public ContactHelper(FirefoxDriver wd) {
-    this.wd = wd;
+    super(wd);
   }
 
   public void submitContactCreation() {
-      wd.findElement(By.name("submit")).click();
+      click(By.name("submit"));
   }
 
   public void fillContactForm(ContactNamesData namesData, String title, String company, String address) {
@@ -28,48 +28,26 @@ public class ContactHelper {
   }
 
   private void fillPhones(ContactPhones contactPhones) {
-      wd.findElement(By.name("home")).click();
-      wd.findElement(By.name("home")).clear();
-      wd.findElement(By.name("home")).sendKeys(contactPhones.getHome());
-      wd.findElement(By.name("mobile")).click();
-      wd.findElement(By.name("mobile")).clear();
-      wd.findElement(By.name("mobile")).sendKeys(contactPhones.getMobile());
-      wd.findElement(By.name("work")).click();
-      wd.findElement(By.name("work")).clear();
-      wd.findElement(By.name("work")).sendKeys(contactPhones.getWork());
-      wd.findElement(By.name("fax")).click();
-      wd.findElement(By.name("fax")).clear();
-      wd.findElement(By.name("fax")).sendKeys(contactPhones.getFax());
+      type(By.name("home"), contactPhones.getHome());
+      type(By.name("mobile"), contactPhones.getMobile());
+      type(By.name("work"),contactPhones.getWork());
+      type(By.name("fax"), contactPhones.getFax());
   }
 
   private void fillCompanyParam(ContactCompanyParam contactCompanyParam) {
-      wd.findElement(By.name("title")).click();
-      wd.findElement(By.name("title")).clear();
-      wd.findElement(By.name("title")).sendKeys(contactCompanyParam.getTitle());
-      wd.findElement(By.name("company")).click();
-      wd.findElement(By.name("company")).clear();
-      wd.findElement(By.name("company")).sendKeys(contactCompanyParam.getCompany());
-      wd.findElement(By.name("address")).click();
-      wd.findElement(By.name("address")).clear();
-      wd.findElement(By.name("address")).sendKeys(contactCompanyParam.getAddress());
+      type(By.name("title"), contactCompanyParam.getTitle());
+      type(By.name("company"), contactCompanyParam.getCompany());
+      type(By.name("address"), contactCompanyParam.getAddress());
   }
 
   private void fillNamesData(String firstname, String middlename, String lastname, String nickname) {
-      wd.findElement(By.name("firstname")).click();
-      wd.findElement(By.name("firstname")).clear();
-      wd.findElement(By.name("firstname")).sendKeys(firstname);
-      wd.findElement(By.name("middlename")).click();
-      wd.findElement(By.name("middlename")).clear();
-      wd.findElement(By.name("middlename")).sendKeys(middlename);
-      wd.findElement(By.name("lastname")).click();
-      wd.findElement(By.name("lastname")).clear();
-      wd.findElement(By.name("lastname")).sendKeys(lastname);
-      wd.findElement(By.name("nickname")).click();
-      wd.findElement(By.name("nickname")).clear();
-      wd.findElement(By.name("nickname")).sendKeys(nickname);
+      type(By.name("firstname"), firstname);
+      type(By.name("middlename"), middlename);
+      type(By.name("lastname"), lastname);
+      type(By.name("nickname"), nickname);
   }
 
   public void initContactCreation() {
-      wd.findElement(By.linkText("add new")).click();
+      click(By.linkText("add new"));
   }
 }
