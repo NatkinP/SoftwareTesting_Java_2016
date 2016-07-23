@@ -1,6 +1,7 @@
 package ru.stqa.prt.addressbook.appmanager;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.stqa.prt.addressbook.model.ContactCompanyParam;
 import ru.stqa.prt.addressbook.model.ContactNamesData;
@@ -50,4 +51,28 @@ public class ContactHelper extends HelperBase {
   public void initContactCreation() {
       click(By.linkText("add new"));
   }
+
+  public void editFirstContact(){
+    click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
+  }
+
+  public void updateContact(){
+    click(By.name("update"));
+  }
+
+  public void selectFirstContact() {
+    WebElement selected = wd.findElement(By.name("selected[]"));
+    if (!selected.isSelected()) {
+      selected.click();
+    }
+  }
+
+  public void pressContactDelete() {
+    click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
+  }
+
+  public void catchMessage() {
+    wd.switchTo().alert().accept();
+  }
+
 }
