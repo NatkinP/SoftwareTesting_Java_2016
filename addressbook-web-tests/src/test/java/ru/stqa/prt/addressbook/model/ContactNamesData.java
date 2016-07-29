@@ -5,7 +5,7 @@ public class ContactNamesData {
   private final String middlename;
   private final String lastname;
   private final String nickname;
-  private String group;
+  private final String group;
 
   public ContactNamesData(String firstname, String middlename, String lastname, String nickname, String group) {
     this.firstname = firstname;

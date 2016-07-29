@@ -84,4 +84,13 @@ public class ContactHelper extends HelperBase {
     wd.switchTo().alert().accept();
   }
 
+  public boolean isThereAContact() {
+    return isElementPresent(By.name("selected[]"));
+  }
+
+  public void createOrEditContact(ContactNamesData contactNames, boolean isCreate) {
+    initContactCreation();
+    fillContactForm(contactNames, "Boss", "TheBestBossCompany", "123115, USSR, Moscow, Tverskaya st, 1", isCreate);
+    submitContactCreation();
+  }
 }
