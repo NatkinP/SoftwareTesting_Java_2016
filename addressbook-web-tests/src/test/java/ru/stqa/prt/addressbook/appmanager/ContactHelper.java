@@ -10,6 +10,10 @@ import org.testng.Assert;
 import ru.stqa.prt.addressbook.model.ContactCompanyParam;
 import ru.stqa.prt.addressbook.model.ContactNamesData;
 import ru.stqa.prt.addressbook.model.ContactPhones;
+import ru.stqa.prt.addressbook.model.GroupData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by natkin on 20.07.2016.
@@ -61,19 +65,17 @@ public class ContactHelper extends HelperBase {
     click(By.linkText("add new"));
   }
 
-  public void editFirstContact() {
-    click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
+  public void editContact(int index) {
+    String whereClick = "//table[@id='maintable']/tbody/tr[" + String.valueOf(index) + "]/td[8]/a/img";
+    click(By.xpath(whereClick));
   }
 
   public void updateContact() {
     click(By.name("update"));
   }
 
-  public void selectFirstContact() {
-    WebElement selected = wd.findElement(By.name("selected[]"));
-    if (!selected.isSelected()) {
-      selected.click();
-    }
+  public void selectContact(int index) {
+    wd.findElements(By.name("selected[]")).get(index).click(); ;
   }
 
   public void pressContactDelete() {
@@ -92,5 +94,23 @@ public class ContactHelper extends HelperBase {
     initContactCreation();
     fillContactForm(contactNames, "Boss", "TheBestBossCompany", "123115, USSR, Moscow, Tverskaya st, 1", isCreate);
     submitContactCreation();
+  }
+
+  public int getContactCount() {
+    return wd.findElements(By.name("selected[]")).size();
+  }
+
+  public List<ContactNamesData> getContactList() {
+    List<ContactNamesData> contacts = new ArrayList<ContactNamesData>();
+    List<WebElement> rows = wd.findElements(By.name("entry"));
+    for (WebElement row : rows) {
+      List<WebElement> cells = row.findElements(By.tagName("td"));
+      int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
+      String lastname = cells.get(1).getText();
+      String firstname = cells.get(2).getText();
+      ContactNamesData contact = new ContactNamesData(id, firstname, null, lastname, null, null);
+      contacts.add(contact);
+    }
+    return contacts;
   }
 }
