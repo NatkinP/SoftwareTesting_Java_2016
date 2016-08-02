@@ -13,7 +13,9 @@ import ru.stqa.prt.addressbook.model.ContactPhones;
 import ru.stqa.prt.addressbook.model.GroupData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by natkin on 20.07.2016.
@@ -66,16 +68,15 @@ public class ContactHelper extends HelperBase {
   }
 
   public void edit(int index) {
-    String whereClick = "//table[@id='maintable']/tbody/tr[" + String.valueOf(index) + "]/td[8]/a/img";
-    click(By.xpath(whereClick));
+    wd.findElement(By.cssSelector("td.center > a[href='edit.php?id=" + index + "']")).click();
   }
 
   public void updateContact() {
     click(By.name("update"));
   }
 
-  public void selectContact(int index) {
-    wd.findElements(By.name("selected[]")).get(index).click(); ;
+  private void selectContactById(int id) {
+    wd.findElement(By.cssSelector("Input[id='" + id + "']")).click();
   }
 
   public void pressContactDelete() {
@@ -96,14 +97,14 @@ public class ContactHelper extends HelperBase {
     submitContactCreation();
   }
 
-  public void modify(List<ContactNamesData> before, ContactNamesData contact) {
-    edit(before.size());
+  public void modify(ContactNamesData contact) {
+    edit(contact.getId());
     fillContactForm(contact, "Boss", "TheBestBossCompany", "123115, USSR, Moscow, Tverskaya st, 1", false);
     updateContact();
   }
 
-  public void delete(int index) {
-    selectContact(index);
+  public void delete(ContactNamesData contact) {
+    selectContactById(contact.getId());
     pressContactDelete();
     catchMessage();
   }
@@ -112,8 +113,8 @@ public class ContactHelper extends HelperBase {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  public List<ContactNamesData> list() {
-    List<ContactNamesData> contacts = new ArrayList<ContactNamesData>();
+  public Set<ContactNamesData> all() {
+    Set<ContactNamesData> contacts = new HashSet<ContactNamesData>();
     List<WebElement> rows = wd.findElements(By.name("entry"));
     for (WebElement row : rows) {
       List<WebElement> cells = row.findElements(By.tagName("td"));
@@ -121,9 +122,9 @@ public class ContactHelper extends HelperBase {
       String lastname = cells.get(1).getText();
       String firstname = cells.get(2).getText();
       ContactNamesData contact = new ContactNamesData()
-                                      .withId(id)
-                                      .withFirstname(firstname)
-                                      .withLastname(lastname);
+              .withId(id)
+              .withFirstname(firstname)
+              .withLastname(lastname);
       contacts.add(contact);
     }
     return contacts;

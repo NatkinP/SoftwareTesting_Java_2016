@@ -4,14 +4,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.prt.addressbook.model.ContactNamesData;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.Set;
 
 public class ContactCreationTests extends TestBase {
 
   @Test//(enabled = false)
   public void testContactCreation() {
-    List<ContactNamesData> before = app.contact().list();
+    Set<ContactNamesData> before = app.contact().all();
     ContactNamesData contact = new ContactNamesData()
                                   .withFirstname("Ivan")
                                   .withMiddlename("Zigmoondovich")
@@ -20,13 +19,11 @@ public class ContactCreationTests extends TestBase {
                                   .withGroup("test1");
     app.contact().createOrEditContact(contact,true);
     app.goTo().returnToHomePage();
-    List<ContactNamesData> after = app.contact().list();
+    Set<ContactNamesData> after = app.contact().all();
     Assert.assertEquals(before.size() + 1, after.size());
 
+    contact.withId(after.stream().mapToInt((o) -> o.getId()).max().getAsInt());
     before.add(contact);
-    Comparator<? super ContactNamesData> byId = (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
-    before.sort(byId);
-    after.sort(byId);
     Assert.assertEquals(before, after);
   }
 
