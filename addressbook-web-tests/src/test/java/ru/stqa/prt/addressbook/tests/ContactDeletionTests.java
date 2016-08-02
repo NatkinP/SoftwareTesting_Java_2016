@@ -1,17 +1,9 @@
 package ru.stqa.prt.addressbook.tests;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.prt.addressbook.model.ContactNamesData;
 import ru.stqa.prt.addressbook.model.Contacts;
-import ru.stqa.prt.addressbook.model.GroupData;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -25,12 +17,12 @@ public class ContactDeletionTests  extends TestBase {
   @BeforeMethod
   public void ansurePreonditios(){
     if (!app.contact().isThereAContact()) {
-      app.contact().createOrEditContact(new ContactNamesData()
+      app.contact().create(new ContactNamesData()
               .withFirstname("Ivan")
               .withMiddlename("Zigmoondovich")
               .withLastname("Zakipailo")
               .withNickname("TeaPot")
-              .withGroup("test1"), true);
+              .withGroup("test1"));
       app.goTo().homePage();
     }
   }
@@ -42,8 +34,8 @@ public class ContactDeletionTests  extends TestBase {
     ContactNamesData deletedContact = before.iterator().next(); // Возвращает первый попавшийся элемент множетсва
     app.contact().delete(deletedContact);
     app.goTo().homePage();
+    assertThat(before.size() - 1, equalTo(app.contact().count()));
     Contacts after = app.contact().all();
-    assertEquals(before.size() - 1, after.size());
     assertThat(after, equalTo(before.without(deletedContact)));
   }
 

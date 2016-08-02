@@ -1,16 +1,9 @@
 package ru.stqa.prt.addressbook.tests;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.prt.addressbook.model.ContactNamesData;
 import ru.stqa.prt.addressbook.model.Contacts;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,12 +17,12 @@ public class ContactModificationTests extends TestBase {
   @BeforeMethod
   public void ansurePreonditios(){
     if (!app.contact().isThereAContact()) {
-      app.contact().createOrEditContact(new ContactNamesData()
+      app.contact().create(new ContactNamesData()
                                             .withFirstname("Ivan")
                                             .withMiddlename("Zigmoondovich")
                                             .withLastname("Zakipailo")
                                             .withNickname("TeaPot")
-                                            .withGroup("test1"), true);
+                                            .withGroup("test1"));
       app.goTo().homePage();
     }
   }
@@ -46,9 +39,8 @@ public class ContactModificationTests extends TestBase {
                                           .withNickname("TeaPot");
     app.contact().modify(contact);
     app.goTo().returnToHomePage();
+    assertThat(app.group().count(), equalTo(before.size()));
     Contacts after = app.contact().all();
-    assertEquals(before.size() , after.size());
-
     assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
   }
 
