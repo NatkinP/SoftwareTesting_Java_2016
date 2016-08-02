@@ -1,13 +1,20 @@
 package ru.stqa.prt.addressbook.tests;
 
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.prt.addressbook.model.ContactNamesData;
+import ru.stqa.prt.addressbook.model.Contacts;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 
 /**
  * Created by natkin on 22.07.2016.
@@ -29,22 +36,20 @@ public class ContactModificationTests extends TestBase {
 
   @Test //(enabled = false)
   public void testContactModification() {
-    Set<ContactNamesData> before = app.contact().all();
-    ContactNamesData modifyContact = before.iterator().next(); // Возвращает первый попавшийся элемент множетсва
+    Contacts before = app.contact().all();
+    ContactNamesData modifiedContact = before.iterator().next(); // Возвращает первый попавшийся элемент множетсва
     ContactNamesData contact = new ContactNamesData()
-                                          .withId(modifyContact.getId())
+                                          .withId(modifiedContact.getId())
                                           .withFirstname("Ivan2")
                                           .withMiddlename("Zigmoondovich2")
                                           .withLastname("Zakipailo2")
                                           .withNickname("TeaPot");
     app.contact().modify(contact);
     app.goTo().returnToHomePage();
-    Set<ContactNamesData> after = app.contact().all();
-    Assert.assertEquals(before.size() , after.size());
+    Contacts after = app.contact().all();
+    assertEquals(before.size() , after.size());
 
-    before.remove(modifyContact);
-    before.add(contact);
-    Assert.assertEquals(before, after);
+    assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
   }
 
 }
