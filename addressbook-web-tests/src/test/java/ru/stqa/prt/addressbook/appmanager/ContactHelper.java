@@ -65,7 +65,7 @@ public class ContactHelper extends HelperBase {
     click(By.linkText("add new"));
   }
 
-  public void editContact(int index) {
+  public void edit(int index) {
     String whereClick = "//table[@id='maintable']/tbody/tr[" + String.valueOf(index) + "]/td[8]/a/img";
     click(By.xpath(whereClick));
   }
@@ -96,11 +96,23 @@ public class ContactHelper extends HelperBase {
     submitContactCreation();
   }
 
+  public void modify(List<ContactNamesData> before, ContactNamesData contact) {
+    edit(before.size());
+    fillContactForm(contact, "Boss", "TheBestBossCompany", "123115, USSR, Moscow, Tverskaya st, 1", false);
+    updateContact();
+  }
+
+  public void delete(int index) {
+    selectContact(index);
+    pressContactDelete();
+    catchMessage();
+  }
+
   public int getContactCount() {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  public List<ContactNamesData> getContactList() {
+  public List<ContactNamesData> list() {
     List<ContactNamesData> contacts = new ArrayList<ContactNamesData>();
     List<WebElement> rows = wd.findElements(By.name("entry"));
     for (WebElement row : rows) {
