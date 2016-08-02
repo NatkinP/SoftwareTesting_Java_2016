@@ -1,18 +1,13 @@
 package ru.stqa.prt.addressbook.appmanager;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.prt.addressbook.model.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by natkin on 20.07.2016.
@@ -28,10 +23,8 @@ public class ContactHelper extends HelperBase {
     click(By.name("submit"));
   }
 
-  public void fillContactForm(ContactNamesData namesData, String title, String company, String address, boolean creation) {
-    fillNamesData(namesData.getFirstname(), namesData.getMiddlename(), namesData.getLastname(), namesData.getNickname());
-    fillCompanyParam(new ContactCompanyParam(title, company, address));
-    fillPhones(new ContactPhones("8-495-111-222-333", "8-915-123-45-67", "01", "02"));
+  public void fillContactForm(ContactData namesData, boolean creation) {
+    fillContactData(namesData);
 
     if (creation){
       new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(namesData.getGroup());
@@ -40,24 +33,18 @@ public class ContactHelper extends HelperBase {
     }
   }
 
-  private void fillPhones(ContactPhones contactPhones) {
-    type(By.name("home"), contactPhones.getHome());
-    type(By.name("mobile"), contactPhones.getMobile());
-    type(By.name("work"), contactPhones.getWork());
-    type(By.name("fax"), contactPhones.getFax());
-  }
-
-  private void fillCompanyParam(ContactCompanyParam contactCompanyParam) {
-    type(By.name("title"), contactCompanyParam.getTitle());
-    type(By.name("company"), contactCompanyParam.getCompany());
-    type(By.name("address"), contactCompanyParam.getAddress());
-  }
-
-  private void fillNamesData(String firstname, String middlename, String lastname, String nickname) {
-    type(By.name("firstname"), firstname);
-    type(By.name("middlename"), middlename);
-    type(By.name("lastname"), lastname);
-    type(By.name("nickname"), nickname);
+  private void fillContactData(ContactData contact) {
+    type(By.name("firstname"), contact.getFirstname());
+    type(By.name("middlename"), contact.getMiddlename());
+    type(By.name("lastname"), contact.getLastname());
+    type(By.name("nickname"), contact.getNickname());
+    type(By.name("title"), contact.getTitle());
+    type(By.name("company"), contact.getCompany());
+    type(By.name("address"), contact.getAddress());
+    type(By.name("home"), contact.getHome());
+    type(By.name("mobile"), contact.getMobile());
+    type(By.name("work"), contact.getWork());
+    type(By.name("fax"), contact.getFax());
   }
 
   public void initContactCreation() {
@@ -88,21 +75,21 @@ public class ContactHelper extends HelperBase {
     return isElementPresent(By.name("selected[]"));
   }
 
-  public void create(ContactNamesData contactNames) {
+  public void create(ContactData contactNames) {
     initContactCreation();
-    fillContactForm(contactNames, "Boss", "TheBestBossCompany", "123115, USSR, Moscow, Tverskaya st, 1", true);
+    fillContactForm(contactNames, true);
     submitContactCreation();
     contactCache = null;
   }
 
-  public void modify(ContactNamesData contact) {
+  public void modify(ContactData contact) {
     edit(contact.getId());
-    fillContactForm(contact, "Boss", "TheBestBossCompany", "123115, USSR, Moscow, Tverskaya st, 1", false);
+    fillContactForm(contact, false);
     updateContact();
     contactCache = null;
   }
 
-  public void delete(ContactNamesData contact) {
+  public void delete(ContactData contact) {
     selectContactById(contact.getId());
     pressContactDelete();
     catchMessage();
@@ -126,7 +113,7 @@ public class ContactHelper extends HelperBase {
       int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
       String lastname = cells.get(1).getText();
       String firstname = cells.get(2).getText();
-      ContactNamesData contact = new ContactNamesData()
+      ContactData contact = new ContactData()
               .withId(id)
               .withFirstname(firstname)
               .withLastname(lastname);

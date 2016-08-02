@@ -1,40 +1,82 @@
 package ru.stqa.prt.addressbook.model;
 
-public class ContactNamesData {
+public class ContactData {
   private int id = Integer.MAX_VALUE;
   private String firstname;
   private String middlename;
   private String lastname;
   private String nickname;
-  private String group;
+  private String group; 
+  private String title;
+  private String company;
+  private String address;  
+  private String home;
+  private String mobile;
+  private String work;
+  private String fax;
 
-  public ContactNamesData withId(int id) {
+  public ContactData withId(int id) {
     this.id = id;
     return this;
   }
 
-  public ContactNamesData withFirstname(String firstname) {
+  public ContactData withFirstname(String firstname) {
     this.firstname = firstname;
     return this;
   }
 
-  public ContactNamesData withMiddlename(String middlename) {
+  public ContactData withMiddlename(String middlename) {
     this.middlename = middlename;
     return this;
   }
 
-  public ContactNamesData withLastname(String lastname) {
+  public ContactData withLastname(String lastname) {
     this.lastname = lastname;
     return this;
   }
 
-  public ContactNamesData withNickname(String nickname) {
+  public ContactData withNickname(String nickname) {
     this.nickname = nickname;
     return this;
   }
 
-  public ContactNamesData withGroup(String group) {
+  public ContactData withGroup(String group) {
     this.group = group;
+    return this;
+  }
+
+  public ContactData withTitle(String title) {
+    this.title = title;
+    return this;
+  }
+
+  public ContactData withCompany(String company) {
+    this.company = company;
+    return this;
+  }
+
+  public ContactData withAddress(String address) {
+    this.address = address;
+    return this;
+  }
+
+  public ContactData withHome(String home) {
+    this.home = home;
+    return this;
+  }
+
+  public ContactData withMobile(String mobile) {
+    this.mobile = mobile;
+    return this;
+  }
+
+  public ContactData withWork(String work) {
+    this.work = work;
+    return this;
+  }
+
+  public ContactData withFax(String fax) {
+    this.fax = fax;
     return this;
   }
 
@@ -62,10 +104,37 @@ public class ContactNamesData {
     return group;
   }
 
+  public String getTitle() {
+    return title;
+  }
+
+  public String getCompany() {
+    return company;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public String getHome() {
+    return home;
+  }
+
+  public String getMobile() {
+    return mobile;
+  }
+
+  public String getWork() {
+    return work;
+  }
+
+  public String getFax() {
+    return fax;
+  }
 
   @Override
   public String toString() {
-    return "ContactNamesData{" +
+    return "ContactData{" +
             "id=" + id +
             ", firstname='" + firstname + '\'' +
             ", lastname='" + lastname + '\'' +
@@ -77,7 +146,7 @@ public class ContactNamesData {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    ContactNamesData that = (ContactNamesData) o;
+    ContactData that = (ContactData) o;
 
     if (id != that.id) return false;
     if (firstname != null ? !firstname.equals(that.firstname) : that.firstname != null) return false;

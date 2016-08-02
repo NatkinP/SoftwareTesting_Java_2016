@@ -25,7 +25,7 @@ public class GroupDeletionTests extends TestBase {
     }
   }
 
-  @Test
+  @Test(enabled = false)
   public void testGroupDeletion() {
     Groups before = app.group().all();
     GroupData deletedGroup = before.iterator().next(); // Возвращает первый попавшийся элемент множетсва
