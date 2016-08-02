@@ -16,7 +16,12 @@ public class ContactModificationTests extends TestBase {
   @BeforeMethod
   public void ansurePreonditios(){
     if (!app.contact().isThereAContact()) {
-      app.contact().createOrEditContact(new ContactNamesData("Ivan", "Zigmoondovich", "Zakipailo", "TeaPot", "test1"), true);
+      app.contact().createOrEditContact(new ContactNamesData()
+                                            .withFirstname("Ivan")
+                                            .withMiddlename("Zigmoondovich")
+                                            .withLastname("Zakipailo")
+                                            .withNickname("TeaPot")
+                                            .withGroup("test1"), true);
       app.goTo().homePage();
     }
   }
@@ -25,7 +30,12 @@ public class ContactModificationTests extends TestBase {
   public void testContactModification() {
     List<ContactNamesData> before = app.contact().list();
     int index = before.size() - 1;
-    ContactNamesData contact = new ContactNamesData(before.get(before.size() - 1).getId(), "Ivan2", "Zigmoondovich2", "Zakipailo2", "TeaPot", null);
+    ContactNamesData contact = new ContactNamesData()
+                                          .withId(before.get(before.size() - 1).getId())
+                                          .withFirstname("Ivan2")
+                                          .withMiddlename("Zigmoondovich2")
+                                          .withLastname("Zakipailo2")
+                                          .withNickname("TeaPot");
     app.contact().modify(before, contact);
     app.goTo().returnToHomePage();
     List<ContactNamesData> after = app.contact().list();

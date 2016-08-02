@@ -1,33 +1,41 @@
 package ru.stqa.prt.addressbook.model;
 
 public class ContactNamesData {
-  private int id;
-  private final String firstname;
-  private final String middlename;
-  private final String lastname;
-  private final String nickname;
-  private final String group;
+  private int id = Integer.MAX_VALUE;
+  private String firstname;
+  private String middlename;
+  private String lastname;
+  private String nickname;
+  private String group;
 
-  public ContactNamesData(int id, String firstname, String middlename, String lastname, String nickname, String group) {
+  public ContactNamesData withId(int id) {
     this.id = id;
-    this.firstname = firstname;
-    this.middlename = middlename;
-    this.lastname = lastname;
-    this.nickname = nickname;
-    this.group = group;
+    return this;
   }
 
-  public ContactNamesData(String firstname, String middlename, String lastname, String nickname, String group) {
-    this.id = Integer.MAX_VALUE;
+  public ContactNamesData withFirstname(String firstname) {
     this.firstname = firstname;
-    this.middlename = middlename;
-    this.lastname = lastname;
-    this.nickname = nickname;
-    this.group = group;
+    return this;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public ContactNamesData withMiddlename(String middlename) {
+    this.middlename = middlename;
+    return this;
+  }
+
+  public ContactNamesData withLastname(String lastname) {
+    this.lastname = lastname;
+    return this;
+  }
+
+  public ContactNamesData withNickname(String nickname) {
+    this.nickname = nickname;
+    return this;
+  }
+
+  public ContactNamesData withGroup(String group) {
+    this.group = group;
+    return this;
   }
 
   public int getId() {

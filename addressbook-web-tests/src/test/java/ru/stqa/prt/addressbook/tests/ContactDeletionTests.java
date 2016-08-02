@@ -16,12 +16,17 @@ public class ContactDeletionTests  extends TestBase {
   @BeforeMethod
   public void ansurePreonditios(){
     if (!app.contact().isThereAContact()) {
-      app.contact().createOrEditContact(new ContactNamesData("Ivan", "Zigmoondovich", "Zakipailo", "TeaPot", "test1"), true);
+      app.contact().createOrEditContact(new ContactNamesData()
+              .withFirstname("Ivan")
+              .withMiddlename("Zigmoondovich")
+              .withLastname("Zakipailo")
+              .withNickname("TeaPot")
+              .withGroup("test1"), true);
       app.goTo().homePage();
     }
   }
 
-  @Test (enabled = false)
+  @Test// (enabled = false)
   public void testContactDeletion(){
     app.goTo().homePage();
     List<ContactNamesData> before = app.contact().list();
