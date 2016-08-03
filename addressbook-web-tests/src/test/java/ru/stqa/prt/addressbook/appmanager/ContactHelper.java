@@ -6,8 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.prt.addressbook.model.ContactData;
+import ru.stqa.prt.addressbook.model.ContactDatailData;
 import ru.stqa.prt.addressbook.model.Contacts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,16 +38,19 @@ public class ContactHelper extends HelperBase {
 
   private void fillContactData(ContactData contact) {
     type(By.name("firstname"), contact.getFirstname());
-    type(By.name("middlename"), contact.getMiddlename());
+ //   type(By.name("middlename"), contact.getMiddlename());
     type(By.name("lastname"), contact.getLastname());
-    type(By.name("nickname"), contact.getNickname());
-    type(By.name("title"), contact.getTitle());
-    type(By.name("company"), contact.getCompany());
+ //   type(By.name("nickname"), contact.getNickname());
+ //   type(By.name("title"), contact.getTitle());
+ //   type(By.name("company"), contact.getCompany());
     type(By.name("address"), contact.getAddress());
     type(By.name("home"), contact.getHome());
     type(By.name("mobile"), contact.getMobile());
     type(By.name("work"), contact.getWork());
-    type(By.name("fax"), contact.getFax());
+  //  type(By.name("fax"), contact.getFax());
+  //  type(By.name("email"), contact.getEmail());
+    type(By.name("email2"), contact.getEmail2());
+    type(By.name("email3"), contact.getEmail3());
   }
 
   public void initContactCreation() {
@@ -159,5 +164,19 @@ public class ContactHelper extends HelperBase {
     WebElement row = checkbox.findElement(By.xpath("./../.."));
     List<WebElement> cells = row.findElements(By.tagName("td"));
     cells.get(7).findElement(By.tagName("a")).click();
+  }
+
+  public String infoFromDetailForm(ContactData contact) {
+    initContactDetailById(contact.getId());
+    String contactDetails = wd.findElement(By.xpath("//div/div[4]")).getText();
+    wd.navigate().back();
+    return contactDetails;
+  }
+
+  private void initContactDetailById(int id) {
+    WebElement checkbox = wd.findElement(By.cssSelector(String.format("input[value='%s']", id)));
+    WebElement row = checkbox.findElement(By.xpath("./../.."));
+    List<WebElement> cells = row.findElements(By.tagName("td"));
+    cells.get(6).findElement(By.tagName("a")).click();
   }
 }
