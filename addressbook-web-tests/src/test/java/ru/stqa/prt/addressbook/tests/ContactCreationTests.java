@@ -4,29 +4,32 @@ import org.testng.annotations.Test;
 import ru.stqa.prt.addressbook.model.ContactData;
 import ru.stqa.prt.addressbook.model.Contacts;
 
+import java.io.File;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+
 public class ContactCreationTests extends TestBase {
 
-  @Test(enabled = false)
+  @Test//(enabled = false)
   public void testContactCreation() {
     Contacts before = app.contact().all();
+    File photo = new File("src/test/resources/stru.png");
     ContactData contact = new ContactData()
-                                  .withFirstname("Ivan")
-                                  .withMiddlename("Zigmoondovich")
-                                  .withLastname("Zakipailo")
-                                  .withNickname("TeaPot")
-                                  .withGroup("test1")
-                                  .withTitle("Boss")
-                                  .withCompany("TheBestBossCompany")
-                                  .withAddress("123115, USSR, Moscow, Tverskaya st, 1")
-                                  .withHome("8-495-111-222-333")
-                                  .withMobile("8-915-123-45-67")
-                                  .withWork("01")
-                                  .withFax("02")
-                                  .withEmail2("1-2-3-4@hhh.ig")
-                                  .withEmail3("llll@upriamstvo")
-                                  ;
+            .withFirstname("Ivan")
+            .withMiddlename("Zigmoondovich")
+            .withLastname("Zakipailo")
+            .withNickname("TeaPot")
+            .withPhoto(photo)
+            .withTitle("Boss")
+            .withCompany("TheBestBossCompany")
+            .withAddress("123115, USSR, Moscow, Tverskaya st, 1")
+            .withHome("8-495-111-222-333")
+            .withMobile("8-915-123-45-67")
+            .withWork("01")
+            .withFax("02")
+            .withEmail2("1-2-3-4@hhh.ig")
+            .withEmail3("llll@upriamstvo");
     app.contact().create(contact);
     app.goTo().returnToHomePage();
     Contacts after = app.contact().all();
@@ -36,7 +39,7 @@ public class ContactCreationTests extends TestBase {
             before.withAdded(contact.withId(after.stream().mapToInt((o) -> o.getId()).max().getAsInt()))));
   }
 
-  @Test//(enabled = false)
+  @Test(enabled = false)
   public void testBadContactCreation() {
     Contacts before = app.contact().all();
     ContactData contact = new ContactData()
@@ -53,13 +56,21 @@ public class ContactCreationTests extends TestBase {
             .withWork("01")
             .withFax("02")
             .withEmail2("1-2-3-4@hhh.ig")
-            .withEmail3("llll@upriamstvo")
-            ;
+            .withEmail3("llll@upriamstvo");
     app.contact().create(contact);
     app.goTo().returnToHomePage();
     assertThat(before.size(), equalTo(app.contact().count()));
     Contacts after = app.contact().all();
     assertThat(after, equalTo(before));
+  }
+
+  @Test(enabled = false)
+  public void testCurrentDir() {
+    File currentDir = new File(".");
+    System.out.println(currentDir.getAbsolutePath());
+    File photo = new File("src/test/resources/stru.png");
+    System.out.println(photo.getAbsolutePath());
+    System.out.println(photo.exists());
   }
 
 }
