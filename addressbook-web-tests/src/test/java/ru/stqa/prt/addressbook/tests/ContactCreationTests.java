@@ -1,35 +1,60 @@
 package ru.stqa.prt.addressbook.tests;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.prt.addressbook.model.ContactData;
 import ru.stqa.prt.addressbook.model.Contacts;
+import ru.stqa.prt.addressbook.model.GroupData;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactCreationTests extends TestBase {
 
-  @Test//(enabled = false)
-  public void testContactCreation() {
+  @DataProvider
+  public Iterator<Object[]> validContacts() throws IOException {
+    List<Object[]> list = new ArrayList<Object[]>();
+    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.csv")));
+    String line = reader.readLine();
+    while (line != null){
+      String[] split = line.split(";");
+      list.add(new Object[] {new ContactData().withFirstname(split[0])
+                                              .withLastname(split[1])
+                                              .withAddress(split[2])
+                                              .withMobile(split[3])
+                                              .withEmail2(split[4])});
+      line = reader.readLine();
+    }
+    return list.iterator();
+  }
+
+  @Test(dataProvider = "validContacts")//(enabled = false)
+  public void testContactCreation(ContactData contact) {
     Contacts before = app.contact().all();
     File photo = new File("src/test/resources/stru.png");
-    ContactData contact = new ContactData()
-            .withFirstname("Ivan")
-            .withMiddlename("Zigmoondovich")
-            .withLastname("Zakipailo")
-            .withNickname("TeaPot")
-            .withPhoto(photo)
-            .withTitle("Boss")
-            .withCompany("TheBestBossCompany")
-            .withAddress("123115, USSR, Moscow, Tverskaya st, 1")
-            .withHome("8-495-111-222-333")
-            .withMobile("8-915-123-45-67")
-            .withWork("01")
-            .withFax("02")
-            .withEmail2("1-2-3-4@hhh.ig")
-            .withEmail3("llll@upriamstvo");
+//    ContactData contact = new ContactData()
+//            .withFirstname("Ivan")
+//            .withMiddlename("Zigmoondovich")
+//            .withLastname("Zakipailo")
+//            .withNickname("TeaPot")
+//            .withPhoto(photo)
+//            .withTitle("Boss")
+//            .withCompany("TheBestBossCompany")
+//            .withAddress("123115, USSR, Moscow, Tverskaya st, 1")
+//            .withHome("8-495-111-222-333")
+//            .withMobile("8-915-123-45-67")
+//            .withWork("01")
+//            .withFax("02")
+//            .withEmail2("1-2-3-4@hhh.ig")
+//            .withEmail3("llll@upriamstvo");
     app.contact().create(contact);
     app.goTo().returnToHomePage();
     Contacts after = app.contact().all();
