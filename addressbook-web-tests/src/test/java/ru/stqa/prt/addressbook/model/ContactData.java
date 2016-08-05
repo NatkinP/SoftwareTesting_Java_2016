@@ -2,31 +2,51 @@ package ru.stqa.prt.addressbook.model;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.File;
 
-@XStreamAlias("contacts")
-
+@XStreamAlias("contact")
+@Entity
+@Table(name = "addressbook")
 public class ContactData {
-  @XStreamOmitField private int id = Integer.MAX_VALUE;
+  @XStreamOmitField
+  @Id
+  private int id = Integer.MAX_VALUE;
   private String firstname;
   private String middlename;
   private String lastname;
   private String nickname;
+  @Transient
   private String group; 
   private String title;
   private String company;
-  private String address;  
+  @Type(type = "text")
+  private String address;
+  @Type(type = "text")
   private String home;
+  @Type(type = "text")
   private String mobile;
+  @Type(type = "text")
   private String work;
+  @Type(type = "text")
   private String fax;
+  @Transient
   private String allPhones;
+  @Type(type = "text")
   private String email;
+  @Type(type = "text")
   private String email2;
+  @Type(type = "text")
   private String email3;
+  @Transient
   private String allEmails;
-  private File photo;
+  @Type(type = "text")
+  private String photo;
 
   public ContactData withId(int id) {
     this.id = id;
@@ -119,7 +139,7 @@ public class ContactData {
   }
 
   public ContactData withPhoto(File photo) {
-    this.photo = photo;
+    this.photo = photo.getPath();
     return this;
   }
 
@@ -196,7 +216,7 @@ public class ContactData {
   }
 
   public File getPhoto() {
-    return photo;
+    return new File(photo);
   }
 
   @Override
