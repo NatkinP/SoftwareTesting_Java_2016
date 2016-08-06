@@ -6,14 +6,20 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.BrowserType;
+import org.testng.annotations.Test;
+import ru.stqa.prt.addressbook.model.GroupData;
+import ru.stqa.prt.addressbook.model.Groups;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.*;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+
+import static org.apache.xalan.xsltc.compiler.util.Type.Int;
 
 /**
  * Created by natkin on 20.07.2016.
@@ -75,5 +81,28 @@ public class ApplicationManager {
 
   public DbHelper db() {
     return dbHelper;
+  }
+
+  public Integer findMaxId(String table, String column){
+    Connection conn = null;
+    Integer best = 0;
+    try {
+      conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/addressbook?serverTimezone=UTC&user=root&password=");
+      Statement st = conn.createStatement();
+      ResultSet rs = st.executeQuery("select max(" + column + ") as best from " + table);
+      while (rs.next()){
+        best = rs.getInt("best");
+      }
+      rs.close();
+      st.close();
+      conn.close();
+
+    } catch (SQLException ex) {
+      // handle any errors
+      System.out.println("SQLException: " + ex.getMessage());
+      System.out.println("SQLState: " + ex.getSQLState());
+      System.out.println("VendorError: " + ex.getErrorCode());
+    }
+    return best;
   }
 }

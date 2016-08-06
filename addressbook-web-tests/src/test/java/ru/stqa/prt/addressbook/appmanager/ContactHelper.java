@@ -3,6 +3,7 @@ package ru.stqa.prt.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.prt.addressbook.model.ContactData;
 import ru.stqa.prt.addressbook.model.Contacts;
@@ -179,5 +180,25 @@ public class ContactHelper extends HelperBase {
     WebElement row = checkbox.findElement(By.xpath("./../.."));
     List<WebElement> cells = row.findElements(By.tagName("td"));
     cells.get(6).findElement(By.tagName("a")).click();
+  }
+
+  public void addContactToGroup(Integer contact_id, String groupName) {
+    selectContactById(contact_id);
+    chooseGroupForAdd(groupName);
+    wd.findElement(By.name("add")).click();
+  }
+
+  private void chooseGroupForAdd(String groupName) {
+    new Select(wd.findElement(By.name("to_group"))).selectByVisibleText(groupName);
+  }
+
+  private void chooseGroupForFiltr(String groupName) {
+    new Select(wd.findElement(By.name("group"))).selectByVisibleText(groupName);
+  }
+
+  public void delContactFromGroup(Integer contact_id, String groupName) {
+    chooseGroupForFiltr(groupName);
+    selectContactById(contact_id);
+    wd.findElement(By.name("remove")).click();
   }
 }

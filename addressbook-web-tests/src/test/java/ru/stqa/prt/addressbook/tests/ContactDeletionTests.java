@@ -22,7 +22,8 @@ public class ContactDeletionTests  extends TestBase {
               .withMiddlename("Zigmoondovich")
               .withLastname("Zakipailo")
               .withNickname("TeaPot")
-              .withGroup("test1"));
+      //        .withGroup("test1")
+      );
       app.goTo().homePage();
     }
   }
