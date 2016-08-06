@@ -7,6 +7,7 @@ import org.testng.Assert;
 import ru.stqa.prt.addressbook.model.ContactData;
 import ru.stqa.prt.addressbook.model.Contacts;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ public class ContactHelper extends HelperBase {
   }
 
   private void fillContactData(ContactData contact) {
+    //File photo = new File("src/test/resources/stru.png");
     type(By.name("firstname"), contact.getFirstname());
  //   type(By.name("middlename"), contact.getMiddlename());
     type(By.name("lastname"), contact.getLastname());
@@ -49,7 +51,7 @@ public class ContactHelper extends HelperBase {
   //  type(By.name("email"), contact.getEmail());
     type(By.name("email2"), contact.getEmail2());
     type(By.name("email3"), contact.getEmail3());
-    attach(By.name("photo"), contact.getPhoto());
+  //  attach(By.name("photo"), contact.getPhoto());
   }
 
   public void initContactCreation() {

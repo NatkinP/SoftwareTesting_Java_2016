@@ -16,7 +16,7 @@ public class ContactModificationTests extends TestBase {
 
   @BeforeMethod
   public void ansurePreonditios(){
-    if (!app.contact().isThereAContact()) {
+    if (app.db().contacts().size() == 0) {
       app.contact().create(new ContactData()
                                             .withFirstname("Ivan")
                                            // .withMiddlename("Zigmoondovich")
@@ -30,7 +30,7 @@ public class ContactModificationTests extends TestBase {
 
   @Test //(enabled = false)
   public void testContactModification() {
-    Contacts before = app.contact().all();
+    Contacts before = app.db().contacts();
     ContactData modifiedContact = before.iterator().next(); // Возвращает первый попавшийся элемент множетсва
     ContactData contact = new ContactData()
                                           .withId(modifiedContact.getId())
@@ -42,7 +42,7 @@ public class ContactModificationTests extends TestBase {
     app.contact().modify(contact);
     app.goTo().returnToHomePage();
     assertThat(app.group().count(), equalTo(before.size()));
-    Contacts after = app.contact().all();
+    Contacts after = app.db().contacts();
     assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
   }
 

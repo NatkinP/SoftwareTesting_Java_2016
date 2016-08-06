@@ -4,10 +4,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.io.File;
 
 @XStreamAlias("contact")
@@ -22,7 +19,7 @@ public class ContactData {
   private String lastname;
   private String nickname;
   @Transient
-  private String group; 
+  private String group;
   private String title;
   private String company;
   @Type(type = "text")
